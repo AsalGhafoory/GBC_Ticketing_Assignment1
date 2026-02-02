@@ -1,0 +1,51 @@
+@model IEnumerable<GBC_Ticketing.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<h1>Fitness Class Events</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Event</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date & Time</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Available Tickets</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.DateTime.ToString("g")</td>
+            <td>@item.Category?.Name</td>
+            <td>$@item.TicketPrice</td>
+            <td>
+                @if (item.AvailableTickets < 5)
+                {
+                    <span class="text-danger fw-bold">
+                        @item.AvailableTickets (Low!)
+                    </span>
+                }
+                else
+                {
+                    @item.AvailableTickets
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
